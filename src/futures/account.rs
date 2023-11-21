@@ -7,7 +7,7 @@ use crate::client::Client;
 use crate::api::{API, Futures};
 use crate::model::Empty;
 use crate::account::OrderSide;
-use crate::futures::model::{Order, TradeHistory};
+use crate::futures::model::{PositionSideResponse, Order, TradeHistory};
 
 use super::model::{
     ChangeLeverageResponse, Transaction, CanceledOrder, PositionRisk, AccountBalance,
@@ -602,6 +602,15 @@ impl FuturesAccount {
         self.client
             .post_signed::<Empty>(API::Futures(Futures::PositionSide), request)
             .map(|_| ())
+    }
+
+
+    pub fn get_position_side(&self) -> Result<PositionSideResponse> {
+        let parameters = BTreeMap::new();
+
+        let request = build_signed_request(parameters, self.recv_window)?;
+        self.client
+            .get_signed(API::Futures(Futures::PositionSide), Some(request))
     }
 
     pub fn cancel_all_open_orders<S>(&self, symbol: S) -> Result<()>

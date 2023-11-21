@@ -322,6 +322,12 @@ pub struct CanceledOrder {
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
+pub struct PositionSideResponse {
+    pub dual_side_position: bool,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct PositionRisk {
     #[serde(with = "string_or_float")]
     pub entry_price: f64,
