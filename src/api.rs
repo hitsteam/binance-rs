@@ -142,7 +142,7 @@ impl From<API> for String {
                 Futures::PremiumIndex => "/fapi/v1/premiumIndex",
                 Futures::FundingRate => "/fapi/v1/fundingRate",
                 Futures::Ticker24hr => "/fapi/v1/ticker/24hr",
-                Futures::TickerPrice => "/fapi/v1/ticker/price",
+                Futures::TickerPrice => "/fapi/v2/ticker/price",
                 Futures::BookTicker => "/fapi/v1/ticker/bookTicker",
                 Futures::AllForceOrders => "/fapi/v1/allForceOrders",
                 Futures::AllOpenOrders => "/fapi/v1/allOpenOrders",
