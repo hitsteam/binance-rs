@@ -7,7 +7,7 @@ use crate::client::Client;
 use crate::api::{API, Futures};
 use crate::model::Empty;
 use crate::account::OrderSide;
-use crate::futures::model::{PositionSideResponse, Order, TradeHistory};
+use crate::futures::model::{PositionSideResponse, Order, TradeHistory, MarginType};
 
 use super::model::{
     ChangeLeverageResponse, Transaction, CanceledOrder, PositionRisk, AccountBalance,
@@ -591,6 +591,21 @@ impl FuturesAccount {
         let request = build_signed_request(parameters, self.recv_window)?;
         self.client
             .post_signed(API::Futures(Futures::ChangeInitialLeverage), request)
+    }
+
+    pub fn change_margin_type<S>(
+        &self, symbol: S, marginType: MarginType,
+    ) -> Result<ChangeLeverageResponse>
+        where
+            S: Into<String>,
+    {
+        let mut parameters: BTreeMap<String, String> = BTreeMap::new();
+        parameters.insert("symbol".into(), symbol.into());
+        parameters.insert("marginType".into(), marginType.to_string());
+
+        let request = build_signed_request(parameters, self.recv_window)?;
+        self.client
+            .post_signed(API::Futures(Futures::MarginType), request)
     }
 
     pub fn change_position_mode(&self, dual_side_position: bool) -> Result<()> {

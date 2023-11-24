@@ -489,6 +489,26 @@ pub struct ChangeLeverageResponse {
     pub symbol: String,
 }
 
+pub enum MarginType {
+    ISOLATED,
+    CROSSED
+}
+impl std::fmt::Display for MarginType {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match *self {
+            MarginType::ISOLATED => write!(f, "ISOLATED"),
+            MarginType::CROSSED => write!(f, "CROSSED"),
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct ChangeMarginTypeResponse {
+    pub code: u8,
+    pub message: String,
+}
+
 fn default_stop_price() -> f64 {
     0.0
 }
