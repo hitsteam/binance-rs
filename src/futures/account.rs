@@ -594,14 +594,14 @@ impl FuturesAccount {
     }
 
     pub fn change_margin_type<S>(
-        &self, symbol: S, marginType: MarginType,
+        &self, symbol: S, margin_type: MarginType,
     ) -> Result<ChangeLeverageResponse>
         where
             S: Into<String>,
     {
         let mut parameters: BTreeMap<String, String> = BTreeMap::new();
         parameters.insert("symbol".into(), symbol.into());
-        parameters.insert("marginType".into(), marginType.to_string());
+        parameters.insert("marginType".into(), margin_type.to_string());
 
         let request = build_signed_request(parameters, self.recv_window)?;
         self.client
