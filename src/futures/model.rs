@@ -482,6 +482,34 @@ pub struct AccountBalance {
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
+pub struct SubAccountList {
+    pub email: String,
+    pub total_initial_margin: String,
+    pub total_maintenance_margin: String,
+    pub total_margin_balance: String,
+    pub total_open_order_initial_margin: String,
+    pub total_position_initial_margin: String,
+    pub total_unrealized_profit: String,
+    pub total_wallet_balance: String,
+    pub asset: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct SubAccountSummary {
+    pub total_initial_margin: String,
+    pub total_maintenance_margin: String,
+    pub total_margin_balance: String,
+    pub total_open_order_initial_margin: String,
+    pub total_position_initial_margin: String,
+    pub total_unrealized_profit: String,
+    pub total_wallet_balance: String,
+    pub asset: String,
+    pub sub_account_list: Vec<SubAccountList>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct ChangeLeverageResponse {
     pub leverage: u8,
     #[serde(with = "string_or_float")]
