@@ -480,6 +480,11 @@ pub struct AccountBalance {
     pub update_time: u64,
 }
 
+pub enum FuturesType {
+    UsdM = 1,
+    CoinM = 2,
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct SubAccountList {

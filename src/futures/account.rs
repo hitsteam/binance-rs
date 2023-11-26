@@ -7,7 +7,7 @@ use crate::client::Client;
 use crate::api::{API, Futures};
 use crate::model::Empty;
 use crate::account::OrderSide;
-use crate::futures::model::{PositionSideResponse, Order, TradeHistory, MarginType, SubAccountSummary};
+use crate::futures::model::{PositionSideResponse, Order, TradeHistory, MarginType, SubAccountSummary, FuturesType};
 
 use super::model::{
     ChangeLeverageResponse, Transaction, CanceledOrder, PositionRisk, AccountBalance,
@@ -578,8 +578,15 @@ impl FuturesAccount {
             .get_signed(API::Futures(Futures::Balance), Some(request))
     }
 
-    pub fn sub_account_summary(&self) -> Result<Vec<SubAccountSummary>> {
-        let parameters = BTreeMap::new();
+    pub fn sub_account_summary(&self, futures_type: FuturesType, page: Option<u16>, limit:Option<u16>) -> Result<Vec<SubAccountSummary>> {
+        let mut parameters = BTreeMap::new();
+        parameters.insert("futuresType".into(), (futures_type as u8).to_string());
+        if let Some(page) = page {
+            parameters.insert("page".into(), page.to_string());
+        }
+        if let Some(limit) = limit {
+            parameters.insert("limit".into(), limit.to_string());
+        }
 
         let request = build_signed_request(parameters, self.recv_window)?;
         self.client
