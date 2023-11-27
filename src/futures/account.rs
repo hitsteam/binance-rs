@@ -550,12 +550,10 @@ impl FuturesAccount {
         parameters
     }
 
-    pub fn position_information<S>(&self, symbol: S) -> Result<Vec<PositionRisk>> 
-    where
-        S: Into<Option<String>>,
+    pub fn position_information<S>(&self, symbol: Option<String>) -> Result<Vec<PositionRisk>> 
     {
         let mut parameters = BTreeMap::new();
-        if let Some(symbol) = symbol.into() {
+        if let Some(symbol) = symbol {
             parameters.insert("symbol".into(), symbol);
         }
 
