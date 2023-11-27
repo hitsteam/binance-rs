@@ -4,11 +4,12 @@ use binance::futures::account::*;
 
 #[cfg(test)]
 mod tests {
+    use std::env::var;
     use super::*;
     use mockito::{mock, Matcher};
     use float_cmp::*;
     use binance::account::OrderSide;
-    use binance::futures::model::Transaction;
+    use binance::futures::model::{FuturesType, Transaction};
 
     #[test]
     fn change_initial_leverage() {
@@ -194,5 +195,15 @@ mod tests {
         account.get_income(income_request).unwrap();
 
         mock.assert();
+    }
+
+    #[test]
+    fn get_sub_account_summary() {
+        let config = Config::default();
+        let api_key = Some(var("BINANCE_KEY").unwrap().to_string());
+        let secret_key = Some(var("BINANCE_SECRET").unwrap().to_string());
+        let account: FuturesAccount = Binance::new_with_config(api_key, secret_key, &config);
+        let _ = env_logger::try_init();
+        account.sub_account_summary(FuturesType::UsdM, None, None).unwrap();
     }
 }

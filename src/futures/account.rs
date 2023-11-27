@@ -550,12 +550,14 @@ impl FuturesAccount {
         parameters
     }
 
-    pub fn position_information<S>(&self, symbol: S) -> Result<Vec<PositionRisk>>
+    pub fn position_information<S>(&self, symbol: S) -> Result<Vec<PositionRisk>> 
     where
-        S: Into<String>,
+        S: Into<Option<String>>,
     {
         let mut parameters = BTreeMap::new();
-        parameters.insert("symbol".into(), symbol.into());
+        if let Some(symbol) = symbol.into() {
+            parameters.insert("symbol".into(), symbol);
+        }
 
         let request = build_signed_request(parameters, self.recv_window)?;
         self.client
@@ -587,6 +589,7 @@ impl FuturesAccount {
         if let Some(limit) = limit {
             parameters.insert("limit".into(), limit.to_string());
         }
+        println!("parameters {:?}", parameters);
 
         let request = build_signed_request(parameters, self.recv_window)?;
         self.client
