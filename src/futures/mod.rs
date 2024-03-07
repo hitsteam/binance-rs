@@ -1,5 +1,7 @@
 pub mod account;
+pub mod coinaccount;
 pub mod general;
+pub mod coingeneral;
 pub mod market;
 pub mod coinmarket;
 pub mod model;
