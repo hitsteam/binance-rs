@@ -290,7 +290,7 @@ pub struct CanceledOrder {
     #[serde(with = "string_or_float")]
     pub cum_qty: f64,
     #[serde(default)]
-    #[serde(with = "string_or_float_opt")]
+    #[serde(with = "string_or_float_opt", alias="cumBase")]
     pub cum_quote: Option<f64>,
     #[serde(with = "string_or_float")]
     pub executed_qty: f64,
