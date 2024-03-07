@@ -21,7 +21,7 @@
 */
 
 use crate::util::{build_request, build_signed_request};
-use crate::FuturesCoin::model::{
+use crate::futures::model::{
     AggTrades, BookTickers, KlineSummaries, KlineSummary, LiquidationOrders, MarkPrices,
     OpenInterest, OpenInterestHist, OrderBook, PriceStats, SymbolPrice, Tickers, Trades,
 };
@@ -30,7 +30,7 @@ use crate::errors::Result;
 use std::collections::BTreeMap;
 use serde_json::Value;
 use crate::api::API;
-use crate::api::Futures;
+use crate::api::FuturesCoin;
 use std::convert::TryInto;
 
 // TODO
@@ -55,7 +55,7 @@ impl FuturesCoinMarket {
         parameters.insert("symbol".into(), symbol.into());
         let request = build_request(parameters);
 
-        self.client.get(API::Futures(FuturesCoin::Depth), Some(request))
+        self.client.get(API::FuturesCoin(FuturesCoin::Depth), Some(request))
     }
 
     // Order book at a custom depth. Currently supported values
@@ -68,7 +68,7 @@ impl FuturesCoinMarket {
         parameters.insert("symbol".into(), symbol.into());
         parameters.insert("limit".into(), depth.to_string());
         let request = build_request(parameters);
-        self.client.get(API::Futures(FuturesCoin::Depth), Some(request))
+        self.client.get(API::FuturesCoin(FuturesCoin::Depth), Some(request))
     }
 
     pub fn get_trades<S>(&self, symbol: S) -> Result<Trades>
@@ -79,7 +79,7 @@ impl FuturesCoinMarket {
         parameters.insert("symbol".into(), symbol.into());
         let request = build_request(parameters);
         self.client
-            .get(API::Futures(FuturesCoin::Trades), Some(request))
+            .get(API::FuturesCoin(FuturesCoin::Trades), Some(request))
     }
 
     // TODO This may be incomplete, as it hasn't been tested
@@ -106,7 +106,7 @@ impl FuturesCoinMarket {
         let request = build_signed_request(parameters, self.recv_window)?;
 
         self.client
-            .get_signed(API::Futures(FuturesCoin::HistoricalTrades), Some(request))
+            .get_signed(API::FuturesCoin(FuturesCoin::HistoricalTrades), Some(request))
     }
 
     pub fn get_agg_trades<S1, S2, S3, S4, S5>(
@@ -140,7 +140,7 @@ impl FuturesCoinMarket {
         let request = build_request(parameters);
 
         self.client
-            .get(API::Futures(FuturesCoin::AggTrades), Some(request))
+            .get(API::FuturesCoin(FuturesCoin::AggTrades), Some(request))
     }
 
     // Returns up to 'limit' klines for given symbol and interval ("1m", "5m", ...)
@@ -175,7 +175,7 @@ impl FuturesCoinMarket {
 
         let data: Vec<Vec<Value>> = self
             .client
-            .get(API::Futures(FuturesCoin::Klines), Some(request))?;
+            .get(API::FuturesCoin(FuturesCoin::Klines), Some(request))?;
 
         let klines = KlineSummaries::AllKlineSummaries(
             data.iter()
@@ -197,12 +197,12 @@ impl FuturesCoinMarket {
         let request = build_request(parameters);
 
         self.client
-            .get(API::Futures(FuturesCoin::Ticker24hr), Some(request))
+            .get(API::FuturesCoin(FuturesCoin::Ticker24hr), Some(request))
     }
 
     // 24hr ticker price change statistics for all symbols
     pub fn get_all_24h_price_stats(&self) -> Result<Vec<PriceStats>> {
-        self.client.get(API::Futures(FuturesCoin::Ticker24hr), None)
+        self.client.get(API::FuturesCoin(FuturesCoin::Ticker24hr), None)
     }
 
     // Latest price for ONE symbol.
@@ -216,18 +216,18 @@ impl FuturesCoinMarket {
         let request = build_request(parameters);
 
         self.client
-            .get(API::Futures(FuturesCoin::TickerPrice), Some(request))
+            .get(API::FuturesCoin(FuturesCoin::TickerPrice), Some(request))
     }
 
     // Latest price for all symbols.
     pub fn get_all_prices(&self) -> Result<crate::model::Prices> {
-        self.client.get(API::Futures(FuturesCoin::TickerPrice), None)
+        self.client.get(API::FuturesCoin(FuturesCoin::TickerPrice), None)
     }
 
     // Symbols order book ticker
     // -> Best price/qty on the order book for ALL symbols.
     pub fn get_all_book_tickers(&self) -> Result<BookTickers> {
-        self.client.get(API::Futures(FuturesCoin::BookTicker), None)
+        self.client.get(API::FuturesCoin(FuturesCoin::BookTicker), None)
     }
 
     // -> Best price/qty on the order book for ONE symbol
@@ -239,15 +239,15 @@ impl FuturesCoinMarket {
         parameters.insert("symbol".into(), symbol.into());
         let request = build_request(parameters);
         self.client
-            .get(API::Futures(FuturesCoin::BookTicker), Some(request))
+            .get(API::FuturesCoin(FuturesCoin::BookTicker), Some(request))
     }
 
     pub fn get_mark_prices(&self) -> Result<MarkPrices> {
-        self.client.get(API::Futures(FuturesCoin::PremiumIndex), None)
+        self.client.get(API::FuturesCoin(FuturesCoin::PremiumIndex), None)
     }
 
     pub fn get_all_liquidation_orders(&self) -> Result<LiquidationOrders> {
-        self.client.get(API::Futures(FuturesCoin::AllForceOrders), None)
+        self.client.get(API::FuturesCoin(FuturesCoin::AllForceOrders), None)
     }
 
     pub fn open_interest<S>(&self, symbol: S) -> Result<OpenInterest>
@@ -258,7 +258,7 @@ impl FuturesCoinMarket {
         parameters.insert("symbol".into(), symbol.into());
         let request = build_request(parameters);
         self.client
-            .get(API::Futures(FuturesCoin::OpenInterest), Some(request))
+            .get(API::FuturesCoin(FuturesCoin::OpenInterest), Some(request))
     }
 
     pub fn open_interest_statistics<S1, S2, S3, S4, S5>(
@@ -287,6 +287,6 @@ impl FuturesCoinMarket {
 
         let request = build_request(parameters);
         self.client
-            .get(API::Futures(FuturesCoin::OpenInterestHist), Some(request))
+            .get(API::FuturesCoin(FuturesCoin::OpenInterestHist), Some(request))
     }
 }

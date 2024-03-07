@@ -36,6 +36,8 @@ impl Config {
             .set_ws_endpoint("wss://testnet.binance.vision/ws")
             .set_futures_rest_api_endpoint("https://testnet.binancefuture.com")
             .set_futures_ws_endpoint("https://testnet.binancefuture.com/ws")
+            .set_futures_coin_rest_api_endpoint("https://testnet.binancefuture.com")
+            .set_futures_coin_ws_endpoint("wss://dstream.binancefuture.com")
     }
 
     pub fn set_rest_api_endpoint<T: Into<String>>(mut self, rest_api_endpoint: T) -> Self {
