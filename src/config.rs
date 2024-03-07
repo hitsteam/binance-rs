@@ -6,6 +6,9 @@ pub struct Config {
     pub futures_rest_api_endpoint: String,
     pub futures_ws_endpoint: String,
 
+    pub futures_coin_rest_api_endpoint: String,
+    pub futures_coin_ws_endpoint: String,
+
     pub recv_window: u64,
 }
 
@@ -17,6 +20,9 @@ impl Default for Config {
 
             futures_rest_api_endpoint: "https://fapi.binance.com".into(),
             futures_ws_endpoint: "wss://fstream.binance.com/ws".into(),
+
+            futures_coin_rest_api_endpoint: "https://dapi.binance.com".into(),
+            futures_coin_ws_endpoint: "wss://dstream.binance.com/ws".into(),
 
             recv_window: 5000,
         }
@@ -50,6 +56,18 @@ impl Config {
 
     pub fn set_futures_ws_endpoint<T: Into<String>>(mut self, futures_ws_endpoint: T) -> Self {
         self.futures_ws_endpoint = futures_ws_endpoint.into();
+        self
+    }
+
+    pub fn set_futures_coin_rest_api_endpoint<T: Into<String>>(
+        mut self, futures_coin_rest_api_endpoint: T,
+    ) -> Self {
+        self.futures_coin_rest_api_endpoint = futures_coin_rest_api_endpoint.into();
+        self
+    }
+
+    pub fn set_futures_coin_ws_endpoint<T: Into<String>>(mut self, futures_coin_ws_endpoint: T) -> Self {
+        self.futures_coin_ws_endpoint = futures_coin_ws_endpoint.into();
         self
     }
 
