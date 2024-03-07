@@ -474,9 +474,9 @@ pub struct AccountBalance {
     pub cross_unrealized_pnl: f64,
     #[serde(with = "string_or_float")]
     pub available_balance: f64,
-    #[serde(with = "string_or_float")]
+    #[serde(with = "string_or_float", alias="withdrawAvailable")]
     pub max_withdraw_amount: f64,
-    pub margin_available: bool,
+    pub margin_available: Option<bool>,
     pub update_time: u64,
 }
 
