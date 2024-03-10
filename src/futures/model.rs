@@ -354,10 +354,10 @@ pub struct PositionRisk {
     pub position_side: String,
     #[serde(default)]
     #[serde(with = "string_or_float_opt")]
-    pub notional: f64,
+    pub notional: Option<f64>,
     #[serde(default)]
     #[serde(with = "string_or_float_opt")]
-    pub isolated_wallet: f64,
+    pub isolated_wallet: Option<f64>,
     pub update_time: u64,
 }
 
