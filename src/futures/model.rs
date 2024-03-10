@@ -344,7 +344,7 @@ pub struct PositionRisk {
     pub liquidation_price: f64,
     #[serde(with = "string_or_float")]
     pub mark_price: f64,
-    #[serde(with = "string_or_float")]
+    #[serde(with = "string_or_float", alias="maxQty")]
     pub max_notional_value: f64,
     #[serde(with = "string_or_float", rename = "positionAmt")]
     pub position_amount: f64,
@@ -352,9 +352,11 @@ pub struct PositionRisk {
     #[serde(with = "string_or_float", rename = "unRealizedProfit")]
     pub unrealized_profit: f64,
     pub position_side: String,
-    #[serde(with = "string_or_float")]
+    #[serde(default)]
+    #[serde(with = "string_or_float_opt")]
     pub notional: f64,
-    #[serde(with = "string_or_float")]
+    #[serde(default)]
+    #[serde(with = "string_or_float_opt")]
     pub isolated_wallet: f64,
     pub update_time: u64,
 }
